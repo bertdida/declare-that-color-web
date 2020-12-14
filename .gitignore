@@ -3,5 +3,6 @@
 /client/node_modules
 /client/build
 /client/.eslintcache
+/client/debug.log
 
 .env
