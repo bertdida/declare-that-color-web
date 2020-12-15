@@ -27,4 +27,4 @@ def index():
         css_obj = Vanilla(settings)
 
     result = css_obj.declare_hexcodes(content)
-    return jsonify({"result": result})
+    return jsonify({"result": result, "settings": settings})
