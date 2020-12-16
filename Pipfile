@@ -10,6 +10,7 @@ black = "*"
 flask = "*"
 case-conversion = "*"
 marshmallow = "*"
+flask-compress = "*"
 
 [requires]
 python_version = "3.8"
