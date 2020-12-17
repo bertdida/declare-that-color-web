@@ -55,10 +55,6 @@ select {
   color: var(--color, #333);
   background-color: var(--background-color);
 
-  &:hover {
-    background-color: var(--background-color-hover);
-  }
-
   svg {
     fill: currentColor;
     width: 20px;
@@ -67,6 +63,14 @@ select {
 
   &:focus {
     outline: 0;
+  }
+
+  &:hover {
+    background-color: var(--background-color-hover);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
   }
 
   &--primary {
