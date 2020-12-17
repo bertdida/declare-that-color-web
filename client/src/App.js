@@ -172,7 +172,7 @@ function SettingsForm({ onHide, values: valuesProp, onSave }) {
             className="form__select"
             name="css_preprocessor"
             id="css_preprocessor"
-            value={css_preprocessor}
+            value={css_preprocessor || "none"}
             onChange={onChange}
           >
             <option value="none">None</option>
