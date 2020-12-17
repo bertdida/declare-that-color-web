@@ -1,3 +1,14 @@
+:root {
+  --alto: #dedddd;
+  --black-pearl: #06232b;
+  --fruit-salad: #4caf50;
+  --goblin: #3f8b42;
+  --mercury: #e4e4e4;
+  --mine-shaft: #333333;
+  --seashell: #f1f1f1;
+  --white: #ffffff;
+}
+
 body {
   font-family: Poppins, sans-serif;
   margin: 0;
@@ -19,7 +30,7 @@ select {
 }
 
 .header {
-  background-color: #06232b;
+  background-color: var(--black-pearl);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -29,7 +40,7 @@ select {
   }
 
   &__title {
-    color: #fff;
+    color: var(--white);
     margin-right: 10px;
     text-decoration: none;
 
@@ -52,7 +63,7 @@ select {
   font-weight: 500;
   font-size: 1rem;
   cursor: pointer;
-  color: var(--color, #333);
+  color: var(--color, var(--mine-shaft));
   background-color: var(--background-color);
 
   svg {
@@ -74,19 +85,19 @@ select {
   }
 
   &--primary {
-    --color: #fff;
-    --background-color: #4caf50;
-    --background-color-hover: #3f8b42;
+    --color: var(--white);
+    --background-color: var(--fruit-salad);
+    --background-color-hover: var(--goblin);
   }
 
   &--settings {
-    --background-color: #fff;
-    --background-color-hover: #f1f1f1;
+    --background-color: var(--white);
+    --background-color-hover: var(--seashell);
   }
 
   &--save {
-    --background-color: #e4e4e4;
-    --background-color-hover: #dedddd;
+    --background-color: var(--mercury);
+    --background-color-hover: var(--alto);
   }
 }
 
@@ -98,7 +109,7 @@ select {
     position: absolute;
     left: 0;
     top: calc(100% + 5px);
-    background-color: #fff;
+    background-color: var(--white);
     z-index: 7;
   }
 
@@ -127,7 +138,7 @@ select {
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      background-color: #f1f1f1;
+      background-color: var(--seashell);
     }
   }
 }
