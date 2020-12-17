@@ -65,6 +65,7 @@ export function App() {
             type="button"
             className="btn btn--primary"
             onClick={declareHexCodes}
+            disabled={isLoading}
           >
             Declare hex codes
           </button>
