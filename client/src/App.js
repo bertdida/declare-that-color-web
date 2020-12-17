@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import AceEditor from "react-ace";
-import * as antd from "antd";
-import { SettingOutlined } from "@ant-design/icons";
+import { SettingsLogo } from "./icons";
+import { useOnClickOutside } from "./useOnClickOutside";
 
 import "ace-builds/src-noconflict/mode-css";
 import "ace-builds/src-noconflict/mode-scss";
@@ -9,31 +9,7 @@ import "ace-builds/src-noconflict/mode-less";
 import "ace-builds/src-noconflict/mode-stylus";
 import "ace-builds/src-noconflict/theme-solarized_dark";
 import "ace-builds/src-noconflict/ext-language_tools";
-import "antd/dist/antd.css";
-import "./App.css";
-
-const {
-  Form,
-  Button,
-  Select,
-  Input,
-  Tooltip,
-  Modal,
-  Row,
-  Col,
-  Layout,
-  Space,
-  Typography,
-} = antd;
-
-const { Option } = Select;
-const { Header, Content } = Layout;
-const { Title } = Typography;
-
-const FORM_STATUS = {
-  LOADING: "loading",
-  SUBMITTED: "submitted",
-};
+import "./App.scss";
 
 const DEFAULT_CONTENT = `body {
   height: 100vh;
@@ -56,88 +32,67 @@ const DEFAULT_CONTENT = `body {
 }`;
 
 export function App() {
-  const [formStatus, setFormStatus] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [input, setInput] = useState(DEFAULT_CONTENT);
   const [response, setResponse] = useState({ result: "", settings: {} });
-  const [settings, setSettings] = useState();
-  const [isSettingsVisible, setIsSettingsVisible] = useState(false);
+  const [settings, setSettings] = useState({
+    css_preprocessor: "none",
+    type_case: "dash",
+  });
 
-  async function declareHexCodes() {
-    setFormStatus(FORM_STATUS.LOADING);
-
-    const response = await formatContent({ content: input, settings });
-    setFormStatus(FORM_STATUS.SUBMITTED);
-    setResponse(response);
+  function onSaveSettings(values) {
+    setSettings(values);
   }
 
   function onChangeContent(value) {
     setInput(value);
   }
 
-  function showSettings() {
-    setIsSettingsVisible(true);
-  }
+  async function declareHexCodes() {
+    setIsLoading(true);
 
-  function hideSettings() {
-    setIsSettingsVisible(false);
+    const response = await formatContent({ content: input, settings });
+    setIsLoading(false);
+    setResponse(response);
   }
-
-  function onSaveSettings(values) {
-    setSettings(values);
-    hideSettings();
-  }
-
-  const isLoading = formStatus === FORM_STATUS.LOADING;
 
   return (
-    <Layout className="app">
-      <Header className="header">
-        <a href="/">
-          <Title className="header__title">DeclareThatColor</Title>
+    <div className="app">
+      <header className="header">
+        <div className="header__nav">
+          <Settings values={settings} onSave={onSaveSettings} />
+          <button
+            type="button"
+            className="btn btn--primary"
+            onClick={declareHexCodes}
+          >
+            Declare hex codes
+          </button>
+        </div>
+
+        <a className="header__title" href="/">
+          <h1>DeclareThatColor</h1>
         </a>
+      </header>
 
-        <Space>
-          <Button type="primary" onClick={declareHexCodes}>
-            Declare Hex Codes
-          </Button>
-
-          <Tooltip title="settings">
-            <Button
-              shape="circle"
-              onClick={showSettings}
-              icon={<SettingOutlined />}
-            />
-          </Tooltip>
-        </Space>
-      </Header>
-      <Content>
-        <Row className="editorContainer">
-          <Col span={12}>
-            <Editor
-              mode="css"
-              value={input}
-              onChange={onChangeContent}
-              readOnly={isLoading}
-              focus={true}
-            />
-          </Col>
-          <Col span={12}>
-            <Editor
-              mode={response.settings.css_preprocessor || "css"}
-              value={isLoading ? "⌛ transpiling..." : response.result}
-              readOnly={true}
-              highlightActiveLine={false}
-            />
-          </Col>
-        </Row>
-
-        <SettingsForm
-          visible={isSettingsVisible}
-          onOk={onSaveSettings}
-          onCancel={hideSettings}
+      <div className="main">
+        <Editor
+          mode="css"
+          value={input}
+          onChange={onChangeContent}
+          readOnly={isLoading}
+          focus={true}
+          name="input"
         />
-      </Content>
-    </Layout>
+        <Editor
+          mode={response.settings.css_preprocessor || "css"}
+          value={isLoading ? "⌛ transpiling..." : response.result}
+          readOnly={true}
+          highlightActiveLine={false}
+          name="ouput"
+        />
+      </div>
+    </div>
   );
 }
 
@@ -160,62 +115,106 @@ function Editor(props) {
   );
 }
 
-function SettingsForm({ visible, onCancel, onOk: onOkProp }) {
-  const [form] = Form.useForm();
+function Settings(props) {
+  const [showForm, setShowForm] = useState(false);
 
-  function onOk() {
-    onOkProp(form.getFieldsValue());
+  function onShow() {
+    setShowForm(true);
   }
 
-  const initialValues = {
-    type_case: "dash",
-    css_preprocessor: "",
-    color_name_prefix: "",
-  };
+  function onHide() {
+    setShowForm(false);
+  }
 
   return (
-    <Modal
-      title="Settings"
-      okText="Save"
-      visible={visible}
-      onOk={onOk}
-      onCancel={onCancel}
-    >
-      <Form
-        form={form}
-        initialValues={initialValues}
-        layout="vertical"
-        name="settings"
+    <div className="settings">
+      <button
+        type="button"
+        aria-label="settings"
+        className="btn btn--settings"
+        onClick={onShow}
       >
-        <Form.Item name="css_preprocessor" label="CSS Preprocessor">
-          <Select>
-            <Option value="">None</Option>
-            <Option value="scss">SCSS/Sass</Option>
-            <Option value="less">Less</Option>
-            <Option value="stylus">Stylus</Option>
-          </Select>
-        </Form.Item>
+        <SettingsLogo />
+      </button>
 
-        <Form.Item name="type_case" label="Type Case">
-          <Select>
-            <Option value="dash">Dash</Option>
-            <Option value="camel">Camel</Option>
-            <Option value="pascal">Pascal</Option>
-            <Option value="snake">Snake</Option>
-            <Option value="screaming_snake">Screaming Snake</Option>
-          </Select>
-        </Form.Item>
+      {showForm && <SettingsForm onHide={onHide} {...props} />}
+    </div>
+  );
+}
 
-        <Form.Item label="Color Name Prefix" name="color_name_prefix">
-          <Input />
-        </Form.Item>
-      </Form>
-    </Modal>
+function SettingsForm({ onHide, values: valuesProp, onSave }) {
+  const form = useRef();
+  const [values, setValues] = useState(valuesProp);
+  const { css_preprocessor, type_case } = values;
+
+  useOnClickOutside(form, onHide);
+
+  function onChange(event) {
+    const { name, value } = event.target;
+    setValues({ ...values, [name]: value });
+  }
+
+  function onSubmit(event) {
+    event.preventDefault();
+    onSave(values);
+    onHide();
+  }
+
+  return (
+    <form ref={form} className="settings__form form" onSubmit={onSubmit}>
+      <div className="form__body">
+        <div className="form__group">
+          <label className="form__label" htmlFor="css_preprocessor">
+            CSS Preprocessor
+          </label>
+          <select
+            className="form__select"
+            name="css_preprocessor"
+            id="css_preprocessor"
+            value={css_preprocessor}
+            onChange={onChange}
+          >
+            <option value="none">None</option>
+            <option value="scss">SCSS/Sass</option>
+            <option value="less">Less</option>
+            <option value="stylus">Stylus</option>
+          </select>
+        </div>
+
+        <div className="form__group">
+          <label className="form__label" htmlFor="type_case">
+            Type Case
+          </label>
+          <select
+            className="form__select"
+            name="type_case"
+            id="type_case"
+            value={type_case}
+            onChange={onChange}
+          >
+            <option value="dash">Dash</option>
+            <option value="camel">Camel</option>
+            <option value="pascal">Pascal</option>
+            <option value="snake">Snake</option>
+            <option value="screaming_snake">Screaming Snake</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="form__footer">
+        <button type="button" className="btn" onClick={onHide}>
+          Cancel
+        </button>
+        <button type="submit" className="btn btn--save">
+          Save
+        </button>
+      </div>
+    </form>
   );
 }
 
 async function formatContent({ content, settings = {} }) {
-  if (settings.css_preprocessor === "") {
+  if (settings.css_preprocessor === "none") {
     settings.css_preprocessor = null;
   }
 
