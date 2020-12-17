@@ -9,11 +9,16 @@ compress = Compress()
 
 root_path = os.path.dirname(sys.modules["__main__"].__file__)
 build_path = os.path.join(root_path, "client", "build")
-static_path = os.path.join(build_path, "static")
 
 
 def create_app(config_class):
-    app = Flask(__name__, template_folder=build_path, static_folder=static_path)
+    app = Flask(
+        __name__,
+        static_url_path="",
+        template_folder=build_path,
+        static_folder=build_path,
+    )
+
     compress.init_app(app)
 
     app.config.from_object(config_class)
