@@ -7,7 +7,7 @@ from flask_compress import Compress
 
 compress = Compress()
 
-root_path = os.path.dirname(sys.modules["__main__"].__file__)
+root_path = os.getcwd()
 build_path = os.path.join(root_path, "client", "build")
 
 
