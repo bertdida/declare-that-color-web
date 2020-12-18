@@ -31,10 +31,24 @@ const DEFAULT_INPUT = `body {
   );
 }`;
 
+const DEFAULT_OUTPUT = `/* DeclareThatColor was inspired by [Chirag Mehta's name that color tool][1]
+   and was initially developed as a [Sublime Text 3 plugin][2].
+
+   By any chance, if you found a bug or have a suggestion, feel free
+   to create issues or pull requests on [GitHub][3]. :)
+
+   [1]:https://chir.ag/projects/name-that-color
+   [2]:https://packagecontrol.io/packages/DeclareThatColor
+   [3]:https://github.com/bertdida/declare-that-color-web
+*/`;
+
 export function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [input, setInput] = useState(DEFAULT_INPUT);
-  const [response, setResponse] = useState({ result: "", settings: {} });
+  const [response, setResponse] = useState({
+    result: DEFAULT_OUTPUT,
+    settings: {},
+  });
   const [settings, setSettings] = useState({
     css_preprocessor: "none",
     type_case: "dash",
