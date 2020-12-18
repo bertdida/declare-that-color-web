@@ -4,10 +4,10 @@ from marshmallow import ValidationError
 from .css import Preprocessor, Vanilla
 from .schemas import RequestSchema, RequestSettingsSchema
 
-bp = Blueprint("formatter", __name__, url_prefix="/formatter")
+bp = Blueprint("formatter", __name__)
 
 
-@bp.route("/", methods=["POST"])
+@bp.route("/formatter", methods=["POST"])
 def index():
     json_data = request.get_json()
     request_schema = RequestSchema()

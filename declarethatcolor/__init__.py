@@ -34,6 +34,6 @@ def create_app(config_class):
 
     from declarethatcolor.routes.formatter import bp as formatter_bp
 
-    app.register_blueprint(formatter_bp)
+    app.register_blueprint(formatter_bp, url_prefix="/api")
 
     return app

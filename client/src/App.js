@@ -225,6 +225,6 @@ async function formatContent({ content, settings = {} }) {
     body: JSON.stringify({ content, settings }),
   };
 
-  const response = await fetch("/formatter", requestOptions);
+  const response = await fetch("/api/formatter", requestOptions);
   return response.json();
 }
