@@ -1,0 +1,23 @@
+{
+  "name": "declare-that-color-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "gunicorn run:app",
+    "build": "npm run build --prefix client",
+    "postinstall": "cd ./client && npm install ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bertdida/declare-that-color-web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bertdida/declare-that-color-web/issues"
+  },
+  "homepage": "https://github.com/bertdida/declare-that-color-web#readme"
+}
