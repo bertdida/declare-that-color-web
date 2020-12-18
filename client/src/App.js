@@ -11,7 +11,7 @@ import "ace-builds/src-noconflict/theme-solarized_dark";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "./App.scss";
 
-const DEFAULT_CONTENT = `body {
+const DEFAULT_INPUT = `body {
   height: 100vh;
   width: 100vw;
   background-image: linear-gradient(
@@ -33,7 +33,7 @@ const DEFAULT_CONTENT = `body {
 
 export function App() {
   const [isLoading, setIsLoading] = useState(false);
-  const [input, setInput] = useState(DEFAULT_CONTENT);
+  const [input, setInput] = useState(DEFAULT_INPUT);
   const [response, setResponse] = useState({ result: "", settings: {} });
   const [settings, setSettings] = useState({
     css_preprocessor: "none",
