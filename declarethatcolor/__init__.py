@@ -1,5 +1,4 @@
 import os
-import sys
 
 from flask import Flask, render_template
 from flask_compress import Compress
