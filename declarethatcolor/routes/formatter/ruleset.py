@@ -25,7 +25,7 @@ class RuleSet:
         return css
 
     def create(self, declarations: list):
-        spacing = "\t" if self.use_tabs else " " * 4
+        spacing = "\t" if self.use_tabs else " " * 2
         declarations = ["{}{}".format(spacing, d) for d in declarations]
         declarations_stringed = "\n".join(declarations)
 
