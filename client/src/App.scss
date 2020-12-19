@@ -145,8 +145,31 @@ select {
 
 .main {
   display: flex;
+  flex-grow: 1;
 
-  & > div {
-    flex-grow: 1;
+  .editor,
+  .editor__resizer {
+    flex: 1 1 auto;
+  }
+
+  .editor__resizer {
+    height: 100%;
+    max-width: 30px;
+    background-color: var(--black-pearl);
+    cursor: col-resize;
+  }
+}
+
+.body--resizing {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    cursor: col-resize;
   }
 }

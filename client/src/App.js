@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import AceEditor from "react-ace";
 import { SettingsLogo } from "./icons";
 import { useOnClickOutside } from "./useOnClickOutside";
@@ -43,6 +43,11 @@ const DEFAULT_OUTPUT = `/* DeclareThatColor was inspired by [Chirag Mehta's name
 */`;
 
 export function App() {
+  const editorMinWidth = 500;
+  const editorInput = useRef(null);
+  const editorResizer = useRef(null);
+
+  const [isResizing, setIsResizing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [input, setInput] = useState(DEFAULT_INPUT);
   const [response, setResponse] = useState({
@@ -53,6 +58,70 @@ export function App() {
     css_preprocessor: "none",
     type_case: "dash",
   });
+
+  const onMouseUp = useCallback(() => {
+    setIsResizing(() => false);
+  }, []);
+
+  const onMouseDown = useCallback((event) => {
+    if (event.target === editorResizer.current) {
+      setIsResizing(() => true);
+    }
+  }, []);
+
+  const onMouseMove = useCallback(
+    (event) => {
+      if (!isResizing) {
+        return;
+      }
+
+      const { current: editor } = editorInput;
+      const { current: resizer } = editorResizer;
+
+      const pointerPosition = event.clientX;
+      const editorWidth = Math.max(
+        editorMinWidth,
+        pointerPosition - resizer.clientWidth
+      );
+
+      // we don't want the output editor's width to be less
+      // than the `editorMinWidth`
+      if (document.body.clientWidth - editorMinWidth <= editorWidth) {
+        return;
+      }
+
+      editor.style.width = `${editorWidth}px`;
+      editor.style.flexGrow = 0;
+    },
+    [isResizing]
+  );
+
+  useEffect(() => {
+    document.addEventListener("mouseup", onMouseUp);
+    document.addEventListener("mousedown", onMouseDown);
+    document.addEventListener("mousemove", onMouseMove);
+
+    return function cleanUp() {
+      document.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("mousedown", onMouseDown);
+      document.removeEventListener("mousemove", onMouseMove);
+    };
+  }, [onMouseDown, onMouseMove, onMouseUp]);
+
+  useEffect(() => {
+    if (isResizing) {
+      document.body.classList.add("body--resizing");
+    } else {
+      document.body.classList.remove("body--resizing");
+    }
+  }, [isResizing]);
+
+  function onEditorLoad(editorInstance) {
+    // call `resize` method to prevent unexpect horizontal scroll
+    document.addEventListener("mousemove", () => {
+      editorInstance.resize();
+    });
+  }
 
   function onSaveSettings(values) {
     setSettings(values);
@@ -91,21 +160,28 @@ export function App() {
       </header>
 
       <div className="main">
-        <Editor
-          mode="css"
-          value={input}
-          onChange={onChangeContent}
-          readOnly={isLoading}
-          focus={true}
-          name="input"
-        />
-        <Editor
-          mode={response.settings.css_preprocessor || "css"}
-          value={isLoading ? "⌛ transpiling..." : response.result}
-          readOnly={true}
-          highlightActiveLine={false}
-          name="ouput"
-        />
+        <div className="editor" ref={editorInput}>
+          <Editor
+            mode="css"
+            value={input}
+            onChange={onChangeContent}
+            readOnly={isLoading}
+            focus={true}
+            name="input"
+            onLoad={onEditorLoad}
+          />
+        </div>
+        <div className="editor__resizer" ref={editorResizer} />
+        <div className="editor">
+          <Editor
+            mode={response.settings.css_preprocessor || "css"}
+            value={isLoading ? "⌛ transpiling..." : response.result}
+            readOnly={true}
+            highlightActiveLine={false}
+            name="ouput"
+            onLoad={onEditorLoad}
+          />
+        </div>
       </div>
     </div>
   );
