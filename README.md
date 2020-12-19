@@ -1,8 +1,6 @@
 # DeclareThatColor
 
-A web app version of [Sublime Text 3's DeclareThatColor plugin](https://packagecontrol.io/packages/DeclareThatColor); declare your CSS hex codes to their human-readable color names.
-
-Check the live site on [declarethatcolor.herokuapp.com](https://declarethatcolor.herokuapp.com/).
+A web app version of [Sublime Text 3's DeclareThatColor plugin](https://packagecontrol.io/packages/DeclareThatColor); check the site on [declarethatcolor.herokuapp.com](https://declarethatcolor.herokuapp.com/).
 
 <p align="center">
   <img src="https://github.com/bertdida/declare-that-color-web/blob/main/img/screenshot.png" alt="screenshot"/>
