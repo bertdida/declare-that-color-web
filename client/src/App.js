@@ -60,12 +60,12 @@ export function App() {
   });
 
   const onMouseUp = useCallback(() => {
-    setIsResizing(() => false);
+    setIsResizing(false);
   }, []);
 
   const onMouseDown = useCallback((event) => {
     if (event.target === editorResizer.current) {
-      setIsResizing(() => true);
+      setIsResizing(true);
     }
   }, []);
 
@@ -166,7 +166,7 @@ export function App() {
             value={input}
             onChange={onChangeContent}
             readOnly={isLoading}
-            focus={true}
+            focus
             name="input"
             onLoad={onEditorLoad}
           />
@@ -176,7 +176,7 @@ export function App() {
           <Editor
             mode={response.settings.css_preprocessor || "css"}
             value={isLoading ? "⌛ transpiling..." : response.result}
-            readOnly={true}
+            readOnly
             highlightActiveLine={false}
             name="ouput"
             onLoad={onEditorLoad}
