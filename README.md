@@ -4,6 +4,10 @@ A web app version of [Sublime Text 3's DeclareThatColor plugin](https://packagec
 
 Check the live site on [declarethatcolor.herokuapp.com](https://declarethatcolor.herokuapp.com/).
 
+<p align="center">
+  <img src="https://github.com/bertdida/declare-that-color-web/blob/main/img/screenshot.png" alt="screenshot"/>
+</p>
+
 ## Built With
 
 - Flask
