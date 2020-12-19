@@ -174,3 +174,15 @@ select {
     z-index: 4;
   }
 }
+
+.ace_scrollbar {
+  // makes sure to always hide horizontal scroll
+
+  &.ace_scrollbar-v {
+    bottom: 0 !important;
+  }
+
+  &.ace_scrollbar-h {
+    display: none;
+  }
+}
