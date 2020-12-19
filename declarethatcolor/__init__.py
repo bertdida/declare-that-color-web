@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 from flask_compress import Compress
 
 
@@ -29,7 +29,7 @@ def create_app(config_class):
 
     @app.errorhandler(404)
     def handle_404(error):
-        return render_template("index.html")
+        return redirect("/")
 
     from declarethatcolor.routes.formatter import bp as formatter_bp
 
