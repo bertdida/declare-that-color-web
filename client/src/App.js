@@ -177,7 +177,6 @@ export function App() {
             mode={response.settings.css_preprocessor || "css"}
             value={isLoading ? "⌛ transpiling..." : response.result}
             readOnly
-            highlightActiveLine={false}
             name="ouput"
             onLoad={onEditorLoad}
           />
@@ -196,6 +195,7 @@ function Editor(props) {
       fontSize={16}
       wrapEnabled={true}
       showPrintMargin={false}
+      highlightActiveLine={false}
       setOptions={{
         enableLiveAutocompletion: true,
         showLineNumbers: true,
