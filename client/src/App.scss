@@ -1,6 +1,7 @@
 :root {
   --alto: #dedddd;
   --black-pearl: #06232b;
+  --daintree: #01313f;
   --fruit-salad: #4caf50;
   --goblin: #3f8b42;
   --mercury: #e4e4e4;
@@ -153,10 +154,37 @@ select {
   }
 
   .editor__resizer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 100%;
     max-width: 30px;
     background-color: var(--black-pearl);
     cursor: col-resize;
+
+    &::before {
+      content: "";
+      position: absolute;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .editor__resizeIndecator {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+    width: 12px;
+    height: 40px;
+
+    &::before,
+    &::after {
+      content: "";
+      height: 100%;
+      width: 4px;
+      background-color: var(--daintree);
+    }
   }
 }
 

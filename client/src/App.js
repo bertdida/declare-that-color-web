@@ -171,7 +171,9 @@ export function App() {
             onLoad={onEditorLoad}
           />
         </div>
-        <div className="editor__resizer" ref={editorResizer} />
+        <div className="editor__resizer" ref={editorResizer}>
+          <div className="editor__resizeIndecator" />
+        </div>
         <div className="editor">
           <Editor
             mode={response.settings.css_preprocessor || "css"}
